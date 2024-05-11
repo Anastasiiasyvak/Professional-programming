@@ -1,0 +1,55 @@
+a. As a cool programmer guy I want to have an ability to find the biggest negative value from the provided list of numbers. It will allow me to make my manual calculation faster.
+
+ -> to find the biggest negative value
+ 
+1. User shall be able to see the message that you need to enter a list of numbers.
+2. User shall be able to enter the list of numbers. 
+3. User shall be able to see the biggest negative value from the provided list.
+4. User shall be able to see the message about restart the calculator "yes or no". 
+5. User shall be able to enter the answer about restart.
+6. User shall be able to restart. 
+
+1. Program should be able to display a prompt message for entering a list of numbers.
+2. Program should be able to accept a list of numbers from the user.
+3. Program should be able to store the provided list of numbers.
+4. Program should be able to validate the input to ensure it consists only of numeric values.
+5. Program should be able to display a prompt asking the user to enter a valid list of numbers, If the input contains non-numeric characters or is empty. 
+6. Program should be able to recognize and handle non-numeric characters, and spaces between numbers and minus signs.
+7. Program should be able to iterate through each character in the input.
+8. Program should be able to check for the presence of negative numbers in the list.
+9. Program should be able to display a message indicating the absence of negative numbers in the list, If no negative numbers are found.
+10.Program should be able to compare them and identify the largest one, If negative numbers are present.
+11.Program should be able to display the largest negative number found.
+12. Program should be able to prompt the user if they want to continue the process.
+13. Program should be able to repeat the process, If the user chooses to continue.
+14. Program should be able to terminate, If the user chooses not to continue.
+
+
+
+b. As a cool mathematician I want to be able to get roots of the quadratic equation ax^2 + bx + c. It will allow me to avoid hard calculations related to determinant.
+
+ -> to get roots of the quadratic equation ax^2 + bx + c
+ 
+1. User shall be able to see the message explaining the input format for the quadratic equation.
+2. User shall be able to enter the values of coefficients a, b, and c of the quadratic equation.
+3. User shall be able to see the roots of the quadratic equation.
+4. User shall be able to see the message about restart the solver "yes or no".
+5. User shall be able to enter the answer about restart.
+6. User shall be able to restart.
+ 
+1. Program should be able to display a prompt message explaining the input format for the quadratic equation.
+2. Program should be able to accept the values of coefficients a, b, and c from the user.
+2. Program should be able to store the provided values of coefficients.
+3. Program should be able to validate the input to ensure it consists only of numeric values.
+4. Program should be able to display a prompt asking the user to enter valid numeric values for coefficients, If the input contains non-numeric characters or is empty.
+5. Program should be able to recognize and handle non-numeric characters, and spaces between numbers and signs.
+6. Program should be able to calculate the discriminant (b^2 - 4ac) to determine the nature of roots.
+7. Program should be able to handle different cases based on the value of the discriminant:
+- If discriminant < 0, roots are imaginary.
+- If discriminant = 0, roots are real and equal.
+- If discriminant > 0, roots are real and distinct.
+8. Program should be able to calculate the roots using the quadratic formula (-b ± √(b^2 - 4ac)) / (2a).
+9. Program should be able to display the roots of the quadratic equation.
+10. Program should be able to prompt the user if they want to continue the process.
+11. Program should be able to repeat the process, If the user chooses to continue.
+12. Program should be able to terminate, If the user chooses not to continue.
