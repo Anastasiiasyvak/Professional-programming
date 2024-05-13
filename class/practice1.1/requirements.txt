@@ -3,7 +3,7 @@ a. As a cool programmer guy I want to have an ability to find the biggest negati
  -> to find the biggest negative value
  
 1. User shall be able to see the message that you need to enter a list of numbers.
-2. User shall be able to enter the list of numbers. 
+2. User shall be able to enter the list of numbers (not only integer numbers). 
 3. User shall be able to see the biggest negative value from the provided list.
 4. User shall be able to see the message about restart the calculator "yes or no". 
 5. User shall be able to enter the answer about restart.
@@ -14,12 +14,12 @@ a. As a cool programmer guy I want to have an ability to find the biggest negati
 3. Program should be able to store the provided list of numbers.
 4. Program should be able to validate the input to ensure it consists only of numeric values.
 5. Program should be able to display a prompt asking the user to enter a valid list of numbers, If the input contains non-numeric characters or is empty. 
-6. Program should be able to recognize and handle non-numeric characters, and spaces between numbers and minus signs.
+6. Program should be able to recognize and handle non-numeric characters, and spaces between numbers and minus signs, and recognize not only integer numbers.
 7. Program should be able to iterate through each character in the input.
 8. Program should be able to check for the presence of negative numbers in the list.
 9. Program should be able to display a message indicating the absence of negative numbers in the list, If no negative numbers are found.
-10.Program should be able to compare them and identify the largest one, If negative numbers are present.
-11.Program should be able to display the largest negative number found.
+10. Program should be able to compare them and identify the largest one, If negative numbers are present.
+11. Program should be able to display the largest negative number found.
 12. Program should be able to prompt the user if they want to continue the process.
 13. Program should be able to repeat the process, If the user chooses to continue.
 14. Program should be able to terminate, If the user chooses not to continue.
