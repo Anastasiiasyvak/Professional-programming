@@ -1,13 +1,19 @@
 a. As a cool programmer guy I want to have an ability to find the biggest negative value from the provided list of numbers. It will allow me to make my manual calculation faster.
 
  -> to find the biggest negative value
- 
+
 1. User shall be able to see the message that you need to enter a list of numbers.
 2. User shall be able to enter the list of numbers. 
 3. User shall be able to see the biggest negative value from the provided list.
 4. User shall be able to see the message about restart the calculator "yes or no". 
 5. User shall be able to enter the answer about restart.
 
+// The following block can be omitted - most of the items are more related to implementation details and design
+// You can group few of them as some additional item - Program should handle incorect user input and provide coresponing error messages to the user.
+// Requirements is more related to product managers responsibilities therefore they should not contain too many technical details as it is more related to devteam responsibilities
+// And for developers it is also good to have no such a strict requirements on each small tech details as implementation can be changed and adjusted
+// and if it is a part of requirements then it may cause review of requirements which is usually a painful process.
+// Therefore requirements gives us a lot of details on expected behavior from user perspective but we should not specify each small tech detail here.
 1. Program should be able to display a prompt message for entering a list of numbers.
 2. Program should be able to accept a list of numbers from the user and store this list.
 3. Program should be able to display a prompt asking the user to enter a valid list of numbers, If the input contains non-numeric characters or is empty. 
@@ -29,7 +35,7 @@ b. As a cool mathematician I want to be able to get roots of the quadratic equat
 3. User shall be able to see the roots of the quadratic equation.
 4. User shall be able to see the message about restart the solver "yes or no".
 5. User shall be able to enter the answer about restart.
- 
+
 1. Program should be able to display a prompt message explaining the input format for the quadratic equation.
 2. Program should be able to accept and store the values of coefficients a, b, and c from the user.
 3. Program should be able to display a prompt asking the user to enter valid numeric values for coefficients, If the input contains non-numeric characters or is empty.
