@@ -7,9 +7,9 @@ run_test() {
     shift
     local output=$(./main "$@")
     if [ "$output" == "$expected" ]; then
-        echo "Test passed: $@"
+        echo "[PASS] Test passed: $@"
     else
-        echo "Test failed: $@"
+        echo "[FAIL] Test failed: $@"
         echo "Expected: $expected"
         echo "Got: $output"
     fi
@@ -20,6 +20,8 @@ clear_history() {
 }
 
 clear_history
+
+
 echo "Running Test Case 1"
 run_test "Welcome, Anastasiia!" "Anastasiia"
 run_test "Welcome, Gabriele!" "Gabriele"
@@ -27,6 +29,7 @@ run_test "Hello again(x=2), Gabriele" "Gabriele"
 run_test "Hello again(x=2), Anastasiia" "Anastasiia"
 run_test "Hello again(x=3), Gabriele" "Gabriele"
 run_test "Welcome, Markel!" "Markel"
+
 clear_history
 
 echo "Running Test Case 2"

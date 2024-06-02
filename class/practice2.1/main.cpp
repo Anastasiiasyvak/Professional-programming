@@ -3,50 +3,79 @@
 #include <string>
 #include <unordered_map>
 
-void loadStatistics(std::unordered_map<std::string, int>& stats) {
-    std::ifstream infile("statistics.txt");
-    std::string name;
-    int count;
-    while (infile >> name >> count) {
-        stats[name] = count;
-    }
+namespace {
+    constexpr char databasePath[] = "statistics.txt";
 }
 
-void saveStatistics(const std::unordered_map<std::string, int>& stats) {
-    std::ofstream outfile("statistics.txt");
-    for (const auto& entry : stats) {
-        outfile << entry.first << " " << entry.second << std::endl;
+class StatisticsDatabase {
+private:
+    std::unordered_map<std::string, int> stats;
+    std::string filePath;
+
+public:
+    StatisticsDatabase(const std::string& filePath) : filePath(filePath) {}
+
+    void load() {
+        std::ifstream infile(filePath);
+        std::string name;
+        int count;
+        while (infile >> name >> count) {
+            stats[name] = count;
+        }
     }
-}
+
+    void save() const {
+        std::ofstream outfile(filePath);
+        for (const auto& entry : stats) {
+            outfile << entry.first << " " << entry.second << std::endl;
+        }
+    }
+
+    void clear() {
+        stats.clear();
+        saveToFile();
+        std::cout << "The history was deleted" << std::endl;
+    }
+
+    void deleteUser(const std::string& name) {
+        stats.erase(name);
+        saveToFile();
+        std::cout << "Statistics was deleted for " << name << std::endl;
+    }
+
+    int incrementUserAndGetCount(const std::string& name) {
+        int& count = stats[name];
+        count++;
+        saveToFile();
+        return count;
+    }
+
+private:
+    void saveToFile() const {
+        std::ofstream outfile(filePath, std::ofstream::trunc);
+        for (const auto& entry : stats) {
+            outfile << entry.first << " " << entry.second << std::endl;
+        }
+    }
+};
 
 int main(int argc, char* argv[]) {
-    if (argc < 2 || argc > 3) {
+    if (argc != 2 && argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <name> [delete]" << std::endl;
         return 1;
     }
 
     std::string name = argv[1];
 
-    if (argc == 3 && std::string(argv[2]) != "delete") {
-        std::cerr << "Usage: " << argv[0] << " <name> [delete]" << std::endl;
-        return 1;
-    }
+    StatisticsDatabase database(databasePath);
+    database.load();
 
     if (name == "bread") {
-        std::ofstream outfile("statistics.txt", std::ofstream::trunc);
-        std::cout << "The history was deleted" << std::endl;
-        return 0;
-    }
-
-    std::unordered_map<std::string, int> stats;
-    loadStatistics(stats);
-
-    if (argc == 3 && std::string(argv[2]) == "delete") {
-        stats.erase(name);
-        std::cout << "Statistics was deleted for " << name << std::endl;
+        database.clear();
+    } else if (argc == 3 && std::string(argv[2]) == "delete") {
+        database.deleteUser(name);
     } else {
-        int& count = stats[name];
-        count++;
+        int count = database.incrementUserAndGetCount(name);
         if (count == 1) {
             std::cout << "Welcome, " << name << "!" << std::endl;
         } else {
@@ -54,6 +83,5 @@ int main(int argc, char* argv[]) {
         }
     }
 
-    saveStatistics(stats);
     return 0;
 }

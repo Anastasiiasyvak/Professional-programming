@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <sstream>
+#include <ranges>
 
 int main()
 {
@@ -20,20 +21,25 @@ int main()
 
     std::vector<double> filteredValues;
 
-    for (const auto& str : splitStrings) {
+    auto filterNegative = [](const std::string& str) {
         try {
-            double value = std::stod(str);
-            if (value < 0) {
-                filteredValues.push_back(value);
-            }
+            return std::stod(str);
         } catch (const std::exception&) {
+            return 0.0; // Ignore non-numeric strings
+        }
+    };
+
+    for (const auto& str : splitStrings) {
+        double value = filterNegative(str);
+        if (value < 0) {
+            filteredValues.push_back(value);
         }
     }
 
     if (filteredValues.empty()) {
         std::cout << "No negative values in the list or incorrect input format" << std::endl;
     } else {
-        auto maxElement = *std::max_element(filteredValues.begin(), filteredValues.end());
+        auto maxElement = *std::ranges::max_element(filteredValues);
         std::cout << "Result is " << maxElement << std::endl;
     }
 
