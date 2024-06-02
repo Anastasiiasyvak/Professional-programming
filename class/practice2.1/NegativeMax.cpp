@@ -1,26 +1,47 @@
-#include <ranges>
-#include <print>
 #include <algorithm>
 #include <iostream>
+#include <string>
+#include <vector>
+#include <sstream>
+#include <ranges>
 
 int main()
 {
-    std::println("Enter the list of numbers separated by comma:");
+    std::cout << "Enter the list of numbers separated by comma:" << std::endl;
     std::string inputString;
     std::getline(std::cin, inputString);
 
-    constexpr std::string_view delimiter(",");
-    auto filteredValues = std::views::split(inputString, delimiter)
-        | std::ranges::to<std::vector<std::string>>()
-        | std::views::filter([](const auto& str) { try { return std::stod(str) < 0; } catch (const std::exception& e) { return false; } })
-        | std::ranges::views::transform([](const auto& str) { return std::stod(str); })
-        | std::ranges::to<std::vector>();
+    std::vector<std::string> splitStrings;
+    std::stringstream ss(inputString);
+    std::string token;
+
+    while (std::getline(ss, token, ',')) {
+        splitStrings.push_back(token);
+    }
+
+    std::vector<double> filteredValues;
+
+    auto filterNegative = [](const std::string& str) {
+        try {
+            return std::stod(str);
+        } catch (const std::exception&) {
+            return 0.0; // Ignore non-numeric strings
+        }
+    };
+
+    for (const auto& str : splitStrings) {
+        double value = filterNegative(str);
+        if (value < 0) {
+            filteredValues.push_back(value);
+        }
+    }
 
     if (filteredValues.empty()) {
-        std::println("No negative values in the list or incorrect input format");
+        std::cout << "No negative values in the list or incorrect input format" << std::endl;
+    } else {
+        auto maxElement = *std::ranges::max_element(filteredValues);
+        std::cout << "Result is " << maxElement << std::endl;
     }
-    else {
-        std::println("Result is {}", std::ranges::max(filteredValues));
-    }
-}
 
+    return 0;
+}
