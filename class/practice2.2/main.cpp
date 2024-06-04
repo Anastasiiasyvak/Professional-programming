@@ -24,7 +24,7 @@ bool loadPixels(const string &filename, vector<vector<Pixel>> &pixels, string &e
     string line;
     int lineCount = 0;
     while (getline(file, line)) {
-        if (line.empty()) continue; 
+        if (line.empty()) continue;
         stringstream ss(line);
         vector<Pixel> row;
         string pixelData;
