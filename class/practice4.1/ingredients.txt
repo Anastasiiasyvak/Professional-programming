@@ -1,0 +1,15 @@
+tomatoes - 15.0
+basil - 18.0
+cheese - 20.0
+mozzarella - 22.0
+onion - 8.0
+olives - 12.0
+ham - 25.0
+bacon - 27.0
+pepperoni - 25.0
+eggplant - 10.0
+sausages - 23.0
+mushrooms - 10.0
+pesto - 20.0
+pepper - 10.0
+anchovies - 28.0
