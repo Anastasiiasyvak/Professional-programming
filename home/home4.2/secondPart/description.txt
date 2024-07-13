@@ -1,0 +1,11 @@
+The program demonstrates the use of the adapter design pattern in the context of fashion. The main goal is to create an adapter for an old class that only displays a description of a garment and implement a new interface that supports displaying both a description and an image of a garment.
+
+Program files:
+
+1. ModernFashionDisplay.java: An interface that supports displaying a description and an image of a garment.
+2. LegacyFashionDescription.java: An old class that only supports displaying clothing descriptions.
+3. FashionDisplayAdapter.java: An adapter that implements the `ModernFashionDisplay` interface and uses the old `LegacyFashionDescription` class to display the description, and executes the new code to display the image.
+4. Main.java: The main class where the adapter is tested, displaying both the description and the image of the clothes.
+
+The program allows to use the old class to display the description of clothes through a new interface that allows to display both the description and the image, while maintaining the existing code and adding new functionality.
+
