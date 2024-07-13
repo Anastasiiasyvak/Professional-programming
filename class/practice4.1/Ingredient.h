@@ -1,5 +1,4 @@
-#ifndef INGREDIENT_H
-#define INGREDIENT_H
+#pragma once
 
 #include <string>
 
@@ -15,4 +14,3 @@ private:
     double cost;
 };
 
-#endif 

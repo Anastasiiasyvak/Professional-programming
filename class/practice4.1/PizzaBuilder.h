@@ -1,5 +1,4 @@
-#ifndef PIZZABUILDER_H
-#define PIZZABUILDER_H
+#pragma once
 
 #include <vector>
 #include "Ingredient.h"
@@ -11,12 +10,13 @@ public:
         ingredients.push_back(ingredient);
     }
 
-    Pizza build() {
-        return Pizza(ingredients);
+    [[nodiscard]] Pizza build() {
+        Pizza pizza(std::move(ingredients));
+        ingredients.clear();
+        return pizza;
     }
 
 private:
     std::vector<Ingredient> ingredients;
 };
 
-#endif 

@@ -3,73 +3,80 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
-    private static Map<String, Double> ingredients = new HashMap<>();
+    private static final Map<String, Double> ingredients = new HashMap<>();
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         loadIngredients();
+        choosePizza();
+    }
 
-        Scanner scanner = new Scanner(System.in);
+    private static void choosePizza() {
         System.out.println("Do you want to choose a classic pizza or compose a custom one? (classic/custom)");
         String choice = scanner.nextLine();
 
         PizzaBuilder builder = new PizzaBuilder();
 
         if (choice.equalsIgnoreCase("classic")) {
-            System.out.println("Choose a classic pizza:");
-            System.out.println("1. Margherita - tomatoes, basil, cheese");
-            System.out.println("2. Pepperoni - tomatoes, cheese, pepperoni");
-            System.out.println("3. Vegetarian - tomatoes, basil, cheese, onion, olives, mushrooms, pepper");
-
-            int classicChoice = scanner.nextInt();
-            scanner.nextLine();
-
-            switch (classicChoice) {
-                case 1:
-                    builder.addIngredient(new Ingredient("tomatoes", ingredients.get("tomatoes")))
-                            .addIngredient(new Ingredient("basil", ingredients.get("basil")))
-                            .addIngredient(new Ingredient("cheese", ingredients.get("cheese")));
-                    break;
-                case 2:
-                    builder.addIngredient(new Ingredient("tomatoes", ingredients.get("tomatoes")))
-                            .addIngredient(new Ingredient("cheese", ingredients.get("cheese")))
-                            .addIngredient(new Ingredient("pepperoni", ingredients.get("pepperoni")));
-                    break;
-                case 3:
-                    builder.addIngredient(new Ingredient("tomatoes", ingredients.get("tomatoes")))
-                            .addIngredient(new Ingredient("basil", ingredients.get("basil")))
-                            .addIngredient(new Ingredient("cheese", ingredients.get("cheese")))
-                            .addIngredient(new Ingredient("onion", ingredients.get("onion")))
-                            .addIngredient(new Ingredient("olives", ingredients.get("olives")))
-                            .addIngredient(new Ingredient("mushrooms", ingredients.get("mushrooms")))
-                            .addIngredient(new Ingredient("pepper", ingredients.get("pepper")));
-                    break;
-                default:
-                    System.out.println("Invalid choice!");
-                    return;
-            }
+            handleClassicPizza(builder);
         } else {
-            while (true) {
-                System.out.println("Available ingredients:");
-                for (Map.Entry<String, Double> entry : ingredients.entrySet()) {
-                    System.out.println(entry.getKey() + " - $" + entry.getValue());
-                }
-                System.out.println("Enter an ingredient or type 'done' to finish: ");
-                String ingredientName = scanner.nextLine();
-
-                if (ingredientName.equalsIgnoreCase("done")) break;
-
-                if (ingredients.containsKey(ingredientName)) {
-                    builder.addIngredient(new Ingredient(ingredientName, ingredients.get(ingredientName)));
-                } else {
-                    System.out.println("Ingredient not found!");
-                }
-            }
+            handleCustomPizza(builder);
         }
 
         Pizza pizza = builder.build();
         System.out.println("Your pizza contains:");
         pizza.showIngredients();
         System.out.println("Total cost: $" + pizza.getCost());
+    }
+
+    private static void handleClassicPizza(PizzaBuilder builder) {
+        System.out.println("Choose a classic pizza:");
+        System.out.println("1. Margherita - tomatoes, basil, cheese");
+        System.out.println("2. Pepperoni - tomatoes, cheese, pepperoni");
+        System.out.println("3. Vegetarian - tomatoes, basil, cheese, onion, olives, mushrooms, pepper");
+
+        int classicChoice = scanner.nextInt();
+        scanner.nextLine();
+
+        switch (classicChoice) {
+            case 1:
+                addIngredientsToBuilder(builder, "tomatoes", "basil", "cheese");
+                break;
+            case 2:
+                addIngredientsToBuilder(builder, "tomatoes", "cheese", "pepperoni");
+                break;
+            case 3:
+                addIngredientsToBuilder(builder, "tomatoes", "basil", "cheese", "onion", "olives", "mushrooms", "pepper");
+                break;
+            default:
+                System.out.println("Invalid choice!");
+                return;
+        }
+    }
+
+    private static void handleCustomPizza(PizzaBuilder builder) {
+        while (true) {
+            System.out.println("Available ingredients:");
+            for (Map.Entry<String, Double> entry : ingredients.entrySet()) {
+                System.out.println(entry.getKey() + " - $" + entry.getValue());
+            }
+            System.out.println("Enter an ingredient or type 'done' to finish: ");
+            String ingredientName = scanner.nextLine();
+
+            if (ingredientName.equalsIgnoreCase("done")) break;
+
+            if (ingredients.containsKey(ingredientName)) {
+                builder.addIngredient(new Ingredient(ingredientName, ingredients.get(ingredientName)));
+            } else {
+                System.out.println("Ingredient not found!");
+            }
+        }
+    }
+
+    private static void addIngredientsToBuilder(PizzaBuilder builder, String... ingredientNames) {
+        for (String name : ingredientNames) {
+            builder.addIngredient(new Ingredient(name, ingredients.get(name)));
+        }
     }
 
     private static void loadIngredients() {
