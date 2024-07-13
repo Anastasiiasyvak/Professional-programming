@@ -3,123 +3,123 @@
 #include <vector>
 #include <sstream>
 #include <algorithm>
-
-using namespace std;
+#include <print>
 
 struct Pixel {
-    int r, g, b;
+    int r = 0;
+    int g = 0;
+    int b = 0;
+
+    bool isValid() const {
+        return (r >= 0 && r <= 255) && (g >= 0 && g <= 255) && (b >= 0 && b <= 255);
+    }
+
+    friend std::istream& operator>>(std::istream& is, Pixel& pixel) {
+        char comma1, comma2;
+        return is >> pixel.r >> comma1 >> pixel.g >> comma2 >> pixel.b;
+    }
+
+    friend bool operator==(const Pixel& lhs, const Pixel& rhs) {
+        return lhs.r == rhs.r && lhs.g == rhs.g && lhs.b == rhs.b;
+    }
 };
 
-bool isValidPixel(const Pixel &pixel) {
-    return (pixel.r >= 0 && pixel.r <= 255) && (pixel.g >= 0 && pixel.g <= 255) && (pixel.b >= 0 && pixel.b <= 255);
-}
-
-bool loadPixels(const string &filename, vector<vector<Pixel>> &pixels, string &errorMessage) {
-    ifstream file(filename);
-    if (!file.is_open()) {
-        errorMessage = "Error: Could not open file " + filename;
-        return false;
-    }
-
-    string line;
-    int lineCount = 0;
-    while (getline(file, line)) {
-        if (line.empty()) continue;
-        stringstream ss(line);
-        vector<Pixel> row;
-        string pixelData;
-        while (getline(ss, pixelData, ' ')) {
-            Pixel pixel;
-            replace(pixelData.begin(), pixelData.end(), ',', ' ');
-            stringstream pixelStream(pixelData);
-            if (!(pixelStream >> pixel.r >> pixel.g >> pixel.b) || !isValidPixel(pixel)) {
-                errorMessage = "Invalid pixel data: " + pixelData;
-                return false;
-            }
-            row.push_back(pixel);
-        }
-        if (row.size() != 16) {
-            errorMessage = "Invalid data format: Each line must contain exactly 16 pixels.";
+class Image {
+public:
+    bool initFromFile(const std::string& filename) {
+        std::ifstream file(filename);
+        if (!file.is_open()) {
+            std::println(stderr, "Error: Could not open file {}", filename);
             return false;
         }
-        pixels.push_back(row);
-        lineCount++;
-    }
 
-    if (lineCount != 16) {
-        errorMessage = "Invalid data format: File must contain exactly 16 lines.";
-        return false;
-    }
+        std::string line;
+        while (std::getline(file, line)) {
+            if (line.empty()) continue;
 
-    return true;
-}
+            std::stringstream ss(line);
+            std::vector<Pixel> row;
+            row.reserve(16); 
 
-void savePixels(const string &filename, const vector<vector<Pixel>> &pixels) {
-    ofstream file(filename);
-    if (!file.is_open()) {
-        cerr << "Error: Could not open file " << filename << endl;
-        return;
-    }
+            Pixel pixel;
+            while (ss >> pixel) {
+                if (!pixel.isValid()) {
+                    std::println(stderr, "Invalid pixel data: {} {} {}.", pixel.r, pixel.g, pixel.b);
+                    return false;
+                }
+                row.push_back(pixel);
+            }
 
-    for (const auto &row : pixels) {
-        for (size_t i = 0; i < row.size(); ++i) {
-            file << row[i].r << "," << row[i].g << "," << row[i].b;
-            if (i < row.size() - 1) file << " ";
+            if (row.size() != 16) {
+                std::println(stderr, "Invalid data format: Each line must contain exactly 16 pixels.");
+                return false;
+            }
+            pixels.push_back(row);
         }
-        file << endl;
-    }
-}
 
-void saveError(const string &filename, const string &errorMessage) {
-    ofstream file(filename);
-    if (!file.is_open()) {
-        cerr << "Error: Could not open file " << filename << endl;
-        return;
+        return pixels.size() == 16; // Ensure 16 lines
     }
-    file << errorMessage << endl;
-}
 
-void applyFavoriteColor(vector<vector<Pixel>> &pixels, const Pixel &favoriteColor) {
-    for (size_t y = 0; y < 16; ++y) {
-        for (size_t x = 0; x < 16; ++x) {
-            if (pixels[y][x].r == favoriteColor.r && pixels[y][x].g == favoriteColor.g && pixels[y][x].b == favoriteColor.b) {
-                if (x > 0) pixels[y][x - 1] = favoriteColor;
-                if (y > 0) pixels[y - 1][x] = favoriteColor;
+    bool saveToFile(const std::string& outFile) const {
+        std::ofstream file(outFile);
+        if (!file.is_open()) {
+            std::println(stderr, "Error: Could not open file {}", outFile);
+            return false;
+        }
+
+        for (const auto& row : pixels) {
+            for (const auto& pixel : row) {
+                std::println(file, "{},{},{}", pixel.r, pixel.g, pixel.b);
+            }
+        }
+        return true;
+    }
+
+    void applyFavoriteColor(const Pixel& favoriteColor) {
+        for (size_t y = 0; y < pixels.size(); ++y) {
+            for (size_t x = 0; x < pixels[y].size(); ++x) {
+                if (pixels[y][x] == favoriteColor) {
+                    if (x > 0) pixels[y][x - 1] = favoriteColor; 
+                    if (y > 0) pixels[y - 1][x] = favoriteColor; 
+                }
             }
         }
     }
-}
 
-int main(int argc, char *argv[]) {
+private:
+    std::vector<std::vector<Pixel>> pixels;
+};
+
+int main(int argc, char* argv[]) {
     if (argc != 4) {
-        cerr << "Usage: " << argv[0] << " <input file> <favorite color> <output file>" << endl;
-        cerr << "Favorite color format: R,G,B (e.g., 255,180,245)" << endl;
+        std::println(stderr, "Usage: {} <input file> <favorite color> <output file>", argv[0]);
+        std::println(stderr, "Favorite color format: R,G,B (e.g., 255,180,245)");
         return 1;
     }
 
-    string inputFile = argv[1];
-    string favoriteColorStr = argv[2];
-    string outputFile = argv[3];
+    std::string inputFile = argv[1];
+    std::string favoriteColorStr = argv[2];
+    std::string outputFile = argv[3];
 
     Pixel favoriteColor;
-    replace(favoriteColorStr.begin(), favoriteColorStr.end(), ',', ' ');
-    stringstream colorStream(favoriteColorStr);
-    if (!(colorStream >> favoriteColor.r >> favoriteColor.g >> favoriteColor.b) || !isValidPixel(favoriteColor)) {
-        cerr << "Error: Invalid favorite color format." << endl;
+    std::replace(favoriteColorStr.begin(), favoriteColorStr.end(), ',', ' ');
+    std::stringstream colorStream(favoriteColorStr);
+    if (!(colorStream >> favoriteColor) || !favoriteColor.isValid()) {
+        std::println(stderr, "Error: Invalid favorite color format.");
         return 1;
     }
 
-    vector<vector<Pixel>> pixels;
-    string errorMessage;
-    if (!loadPixels(inputFile, pixels, errorMessage)) {
-        cerr << errorMessage << endl;
-        saveError(outputFile, errorMessage);
-        return 1;
+    Image image;
+    if (!image.initFromFile(inputFile)) {
+        return 1; 
     }
 
-    applyFavoriteColor(pixels, favoriteColor);
-    savePixels(outputFile, pixels);
+    image.applyFavoriteColor(favoriteColor);
+    if (!image.saveToFile(outputFile)) {
+        return 1; 
+    }
 
-    cout << "Processing completed successfully." << endl;
+    std::println("Processing completed successfully.");
     return 0;
 }
+

@@ -1,6 +1,6 @@
 #include "MegaData.h"
 
-// Розмір масивів
+
 constexpr size_t SMALL_ARRAY_SIZE = 1024;
 constexpr size_t BIG_ARRAY_SIZE = 1024 * 1024;
 
@@ -42,4 +42,3 @@ size_t MegaDataPool::size() const {
 size_t MegaDataPool::usedSize() const {
     return pool.size() - available.size();
 }
-
