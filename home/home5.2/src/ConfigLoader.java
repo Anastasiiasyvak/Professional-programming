@@ -8,22 +8,26 @@ public class ConfigLoader {
     private static ConfigLoader instance;
     private final Map<Character, String[]> config = new HashMap<>();
 
-    private ConfigLoader() {
-        loadConfig();
+    private ConfigLoader(String configFile) {
+        loadConfig(configFile);
     }
 
-    public static synchronized ConfigLoader getInstance() {
+    public static synchronized ConfigLoader getInstance(String configFile) {
         if (instance == null) {
-            instance = new ConfigLoader();
+            instance = new ConfigLoader(configFile);
         }
         return instance;
     }
 
-    private void loadConfig() {
-        try (BufferedReader reader = new BufferedReader(new FileReader("config.txt"))) {
+    private boolean loadConfig(String configFile) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(configFile))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(" ");
+                if (parts.length != 3) {
+                    System.err.println("Invalid config line: " + line);
+                    continue;
+                }
                 String range = parts[0];
                 String preWord = parts[1];
                 String postWord = parts[2];
@@ -32,8 +36,10 @@ public class ConfigLoader {
                     config.put(c, new String[]{preWord, postWord});
                 }
             }
+            return true;
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

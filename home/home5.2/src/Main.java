@@ -4,7 +4,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
+    private static final String CONFIG_FILE = "/home/nastia/IdeaProjects/5.2rewrite/src/config.txt";
+
     public static void main(String[] args) {
+        ConfigLoader configLoader = ConfigLoader.getInstance(CONFIG_FILE);
+
         Scanner scanner = new Scanner(System.in);
         String[] favoriteWords = new String[5];
 
@@ -15,7 +19,7 @@ public class Main {
 
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         for (String word : favoriteWords) {
-            executorService.execute(new WordPrinter(word));
+            executorService.execute(new WordPrinter(word, configLoader));
         }
 
         executorService.shutdown();
