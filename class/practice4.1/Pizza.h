@@ -1,5 +1,4 @@
-#ifndef PIZZA_H
-#define PIZZA_H
+#pragma once
 
 #include <vector>
 #include <print>
@@ -27,4 +26,3 @@ private:
     std::vector<Ingredient> ingredients;
 };
 
-#endif 

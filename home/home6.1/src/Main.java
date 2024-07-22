@@ -55,5 +55,7 @@ public class Main {
         dispatcher.unsubscribeGreen(greenSubscriptionId);
         dispatcher.unsubscribeBlue(blueSubscriptionId);
         dispatcher.unsubscribeOrange(orangeSubscriptionId);
+
+        dispatcher.stop();
     }
 }

@@ -37,20 +37,23 @@ void loadIngredients(const std::string& filename, std::unordered_map<std::string
 }
 
 int main() {
+    constexpr const char* filename = "ingredients.txt";
     std::unordered_map<std::string, double> ingredients;
-    loadIngredients("ingredients.txt", ingredients);
+    loadIngredients(filename, ingredients);
 
     PizzaBuilder builder;
     std::string input;
+    constexpr std::string_view doneCommand = "done";
+
     while (true) {
         std::println("Available ingredients:");
-        for (const auto& ingredient : ingredients) {
-            std::println("{} - ${}", ingredient.first, ingredient.second);
+        for (const auto& [ingredientName, ingredientCost] : ingredients) {
+            std::println("{} - ${}", ingredientName, ingredientCost);
         }
-        std::println("Enter an ingredient or type 'done' to finish: ");
+        std::println("Enter an ingredient or type '{}' to finish: ", doneCommand);
         std::getline(std::cin, input);
 
-        if (input == "done") break;
+        if (input == doneCommand) break;
 
         if (ingredients.find(input) != ingredients.end()) {
             builder.addIngredient(Ingredient(input, ingredients[input]));
@@ -66,3 +69,4 @@ int main() {
 
     return 0;
 }
+
